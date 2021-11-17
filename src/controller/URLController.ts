@@ -1,14 +1,14 @@
 import { config } from "../config/constants";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import shortId from "shortid";
 import { URLModel } from "../models/URL.model";
+import { BadRequestError } from "../models/errors/BadRequestError.model";
 
 
 export class URLController {
 
     public async shortin(request: Request, response: Response): Promise<void> {
-        //verificar se a URL já existe
         const { originURL } = request.body;
         const url = await URLModel.findOne({ originURL });
 
@@ -28,16 +28,25 @@ export class URLController {
 
     }
 
-    public async redirect(request: Request, response: Response) {
-        const { hash } = request.params;
+    public async redirect(request: Request, response: Response, next: NextFunction) {
 
-        const url = await URLModel.findOne({ hash });
+        try {
+            const { hash } = request.params;
 
-        if (!url) {
-            return response.status(StatusCodes.BAD_REQUEST).json({ error: "bad request" });
+            const url = await URLModel.findOne({ hash });
+
+            if (!url) {
+                // return response.status(StatusCodes.BAD_REQUEST).json({ error: "bad request" });
+                throw new BadRequestError("url not found");
+            }
+
+            return response.redirect(url.originURL);
+
+        } catch (error) {
+
+            next(error);
+
         }
-
-        return response.redirect(url.originURL);
     }
 
 }

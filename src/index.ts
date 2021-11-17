@@ -2,6 +2,7 @@ import { URLController } from "./controller/URLController"
 import express, { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { MongoConnection } from "./database/MongoConnection";
+import { ErrorHandler } from "./middlewares/ErrorHandler.middleware"
 
 // cofiguração do servidor
 const api = express();
@@ -19,7 +20,9 @@ api.get("/", (request: Request, response: Response) => {
     return response.sendStatus(StatusCodes.OK);
 });
 
+api.use(ErrorHandler);
+
 
 api.listen(5000, () => {
     console.log("server is ronning at port 5000");
-})
+});

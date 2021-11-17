@@ -1,11 +1,12 @@
-import { config } from "../config/constants";
 import mongoose from "mongoose";
+import { config } from "dotenv";
+config();
 
 export class MongoConnection {
 
     public async connect(): Promise<void> {
         try {
-            mongoose.connect(config.MONGO_CONNECTION, () => {
+            mongoose.connect(`${process.env.MONGO_DB_CONNECTION}`, () => {
                 console.log("database conectado");
             });
 
