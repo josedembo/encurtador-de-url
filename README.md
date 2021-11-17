@@ -10,7 +10,7 @@ Project developed in bootcamp Eduzz fullstack
 
 ## how to start the project
 
-after clone the project, go into the project folder, open the command line, them you can start him with twos ways, running the commands:
+after clone the project, go into the project folder, open the command line, them you can start him with twos ways, running the following commands:
 
 - `yarn dev`
 - `yarn start`
